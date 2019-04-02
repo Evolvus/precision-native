@@ -95,7 +95,7 @@ function main_loop() {
       *)
 	log_file_name="$PRECISION100_EXECUTION_LOG_FOLDER/${i}-$(date +%F-%H-%M-%S).out"
 	err_file_name="$PRECISION100_EXECUTION_LOG_FOLDER/${i}-$(date +%F-%H-%M-%S).err"
-        $PRECISION100_BIN_FOLDER/exec_dataflow.sh ${i%.*} 1> >(tee -a "$log_file_name") 2> >(tee -a "$err_file_name" >&2)
+        $PRECISION100_BIN_FOLDER/exec-dataflow.sh ${i%.*} 1> >(tee -a "$log_file_name") 2> >(tee -a "$err_file_name" >&2)
 
 	ask_question "${log_file_name}" "${err_file_name}"
 	break;;
