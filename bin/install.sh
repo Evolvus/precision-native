@@ -7,7 +7,7 @@ DEFAULT_REPO_TYPE="GIT"
 DEFAULT_REPO_URL="git@github.com:ennovatenow/precision-100-migration-templates.git"
 DEFAULT_PROJECT_NAME=simple-demo
 
-PRECISION100_PROJECT_FOLDER=$(pwd)
+PRECISION100_PROJECT_FOLDER=$(dirname $(pwd))
 
 function banner() {
   clear
