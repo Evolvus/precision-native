@@ -15,5 +15,5 @@ if [ ! -z "$2" ]; then
     export SIMULATION_MODE="TRUE"
 fi
 
-$PRECISION100_BIN_FOLDER/install-operator.sh $1
+$PRECISION100_BIN_FOLDER/install-operator.sh $1 $2
 
