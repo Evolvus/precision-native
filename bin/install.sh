@@ -7,8 +7,8 @@ DEFAULT_REPO_TYPE="GIT"
 DEFAULT_REPO_URL="git@github.com:ennovatenow/precision-100-migration-templates.git"
 DEFAULT_PROJECT_NAME=simple-demo
 
-PRECISION100_PROJECT_FOLDER=$(dirname $(pwd))
 
+PRECISION100_PROJECT_FOLDER=$(pwd)
 function banner() {
   clear
   echo "************************************************************************"
@@ -16,6 +16,8 @@ function banner() {
   echo "                  Precision Native                                      "
   echo "                                                                        "
   echo "  A command-line menu driven interface for the PRECISION100 framework.  "
+  echo "                                                                        "
+  echo "  Project folder: $PRECISION100_PROJECT_FOLDER                          "
   echo "                                                                        "
   echo "************************************************************************"
   echo "                                                                        "
@@ -28,6 +30,12 @@ banner
 echo "Location of the PRECISION100 framework installtion: "
 read -p "[$DEFAULT_PRECISION100_HOME]: " INPUT_PRECISION100_FOLDER
 PRECISION100_FOLDER="${INPUT_PRECISION100_FOLDER:-$DEFAULT_PRECISION100_HOME}"
+
+if [[ ! -d $PRECISION100_FOLDER ]]; then
+  echo "Folder $PRECISION100_FOLDER does not exist, exiting..."
+  echo "Please provide the correct location of the PRECISION100 framework installation"
+  exit
+fi
 
 echo "                                                                        "
 echo "Provide the type of the repository to be used for the migration templates "
@@ -63,4 +71,5 @@ export PRECISION100_PROJECT_DEFAULT_CONNECTION="PRECISION100_CONNECTION"
 export PRECISION100_PROJECT_OPERATION_MODE="DEV"
 export CHANNEL="$CHANNEL"
 export SIMULATION_MODE="FALSE"
+export SIMULATION_SLEEP=1
 PROJECT_ENV
