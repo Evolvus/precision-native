@@ -21,9 +21,7 @@ if [ ! -z "$2" ]; then
 fi
 
 export OPERATION="migrate.sh"
-
 DATAFLOW_FILES=$($PRECISION100_BIN_FOLDER/get-dataflows.sh)
-echo $DATAFLOW_FILES;
 function banner() {
   clear
   echo "****************************************************************"
