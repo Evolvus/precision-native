@@ -1,0 +1,3 @@
+[submodule "precision100"]
+	path = precision100
+	url = git@github.com:ennovatenow/precision-100-framework.git
