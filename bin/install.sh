@@ -2,7 +2,7 @@
 
 CHANNEL="PRECISION-NATIVE"
 DEFAULT_PRECISION_NATIVE_HOME=$HOME/simple-demo
-DEFAULT_PRECISION100_HOME=$HOME/precision100
+DEFAULT_PRECISION100_HOME=$(pwd)/precision100
 DEFAULT_REPO_TYPE="GIT"
 DEFAULT_REPO_URL="git@github.com:ennovatenow/precision-100-migration-templates.git"
 DEFAULT_PROJECT_NAME=simple-demo
@@ -23,19 +23,7 @@ function banner() {
   echo "                                                                        "
 }
 banner
-#echo "Location where you want Precision Native installed`: "
-#read -p "[$DEFAULT_PRECISION_NATIVE_HOME]: " INPUT_PRECISION_NATIVE_FOLDER
-#PRECISION_NATIVE_FOLDER="${INPUT_PRECISION_NATIVE_FOLDER:-$DEFAULT_PRECISION_NATIVE_HOME}"
-
-echo "Location of the PRECISION100 framework installtion: "
-read -p "[$DEFAULT_PRECISION100_HOME]: " INPUT_PRECISION100_FOLDER
-PRECISION100_FOLDER="${INPUT_PRECISION100_FOLDER:-$DEFAULT_PRECISION100_HOME}"
-
-if [[ ! -d $PRECISION100_FOLDER ]]; then
-  echo "Folder $PRECISION100_FOLDER does not exist, exiting..."
-  echo "Please provide the correct location of the PRECISION100 framework installation"
-  exit
-fi
+PRECISION100_FOLDER=$(pwd)/precision100
 
 echo "                                                                        "
 echo "Provide the type of the repository to be used for the migration templates "
