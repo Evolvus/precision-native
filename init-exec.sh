@@ -1,6 +1,35 @@
 #!/bin/bash
 
 
+function usage() {
+  echo "Usage: $0 -i <iteration name>"
+  echo "e.g. $0 -i mock1"
+}
+
+DEFAULT_EXECUTION_NAME="mock1"
+
+while getopts ":i:" opt; do
+  case ${opt} in
+    i )
+      INPUT_EXECUTION_NAME=${OPTARG:-$DEFAULT_EXECUTION_NAME}
+      ;;
+    : )
+      usage
+      exit 1
+      ;;
+    \? )
+      usage
+      exit 1
+      ;;
+  esac
+done
+shift $((OPTIND-1))
+
+if [ -z "${INPUT_EXECUTION_NAME}" ]; then
+    usage
+    exit 1
+fi
+
 if [ ! -f ./conf/.project.env.sh ] || [ ! -f $PRECISION100_FOLDER/conf/.env.sh ]; then
    echo "Misconfigured installation - missing files in conf directory or invalid Precision100 installation"
    exit 5
@@ -9,8 +38,6 @@ fi
 source ./conf/.project.env.sh
 source $PRECISION100_FOLDER/conf/.env.sh
 
-DEFAULT_EXECUTION_NAME="mock1"
-read -p "Enter Execution Name [$DEFAULT_EXECUTION_NAME] " INPUT_EXECUTION_NAME
 PRECISION100_EXECUTION_NAME=${INPUT_EXECUTION_NAME:-$DEFAULT_EXECUTION_NAME}
 
 EXECUTION_PID_FILE="$PRECISION100_PROJECT_CONF_FOLDER/.execution.pid"
