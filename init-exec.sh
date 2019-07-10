@@ -1,5 +1,11 @@
 #!/bin/bash
 
+
+if [ ! -f ./conf/.project.env.sh ] || [ ! -f $PRECISION100_FOLDER/conf/.env.sh ]; then
+   echo "Misconfigured installation - missing files in conf directory or invalid Precision100 installation"
+   exit 5
+fi
+
 source ./conf/.project.env.sh
 source $PRECISION100_FOLDER/conf/.env.sh
 
