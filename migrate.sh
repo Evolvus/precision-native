@@ -5,6 +5,16 @@ if [[ ( "$#" -gt 2 ) ]]; then
   exit 1;
 fi
 
+if [ ! -f "$PRECISION100_PROJECT_CONF_FOLDER/.execution.pid" ]; then
+  echo "Iteration not initialized, please initialize the iteration by running init-exec.sh"
+  exit 10
+fi
+
+if [ ! -f ./conf/.project.env.sh ] || [ ! -f $PRECISION100_FOLDER/conf/.env.sh ]; then
+   echo "Misconfigured installation - missing files in conf directory or invalid Precision100 installation"
+   exit 10
+fi
+
 source ./conf/.project.env.sh
 source $PRECISION100_FOLDER/conf/.env.sh
 

@@ -2,28 +2,17 @@
 
 
 function usage() {
-  echo "Usage: $0 -i <iteration name>"
-  echo "e.g. $0 -i mock1"
+  echo "Usage: $0 <iteration name>"
+  echo "e.g. $0 mock1"
 }
 
-DEFAULT_EXECUTION_NAME="mock1"
+if [[ ( "$#" -ne 1 ) ]]; then
+  usage
+  exit 1;
+fi
 
-while getopts ":i:" opt; do
-  case ${opt} in
-    i )
-      INPUT_EXECUTION_NAME=${OPTARG:-$DEFAULT_EXECUTION_NAME}
-      ;;
-    : )
-      usage
-      exit 1
-      ;;
-    \? )
-      usage
-      exit 1
-      ;;
-  esac
-done
-shift $((OPTIND-1))
+DEFAULT_EXECUTION_NAME="mock1"
+INPUT_EXECUTION_NAME=${1:-$DEFAULT_EXECUTION_NAME}
 
 if [ -z "${INPUT_EXECUTION_NAME}" ]; then
     usage
@@ -32,15 +21,21 @@ fi
 
 if [ ! -f ./conf/.project.env.sh ] || [ ! -f $PRECISION100_FOLDER/conf/.env.sh ]; then
    echo "Misconfigured installation - missing files in conf directory or invalid Precision100 installation"
-   exit 5
+   exit 10
 fi
 
 source ./conf/.project.env.sh
 source $PRECISION100_FOLDER/conf/.env.sh
 
+echo "Starting iteration: ${INPUT_EXECUTION_NAME}"
 PRECISION100_EXECUTION_NAME=${INPUT_EXECUTION_NAME:-$DEFAULT_EXECUTION_NAME}
-
 EXECUTION_PID_FILE="$PRECISION100_PROJECT_CONF_FOLDER/.execution.pid"
+
+if [ -f "$EXECUTION_PID_FILE" ]; then
+    echo "Cannot initialize interation: $PRECISION100_EXECUTION_NAME"
+    echo "Already executing iteration: $(cat $EXECUTION_PID_FILE)"
+    exit 10
+fi
 echo $PRECISION100_EXECUTION_NAME > "$EXECUTION_PID_FILE"
 
 PRECISION100_EXECUTION_CONF_FILE_NAME="$PRECISION100_PROJECT_CONF_FOLDER/$PRECISION100_EXECUTION_NAME.env.sh"
