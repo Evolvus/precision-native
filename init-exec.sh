@@ -8,7 +8,7 @@ function usage() {
 
 if [[ ( "$#" -ne 1 ) ]]; then
   usage
-  exit 1;
+  exit 1
 fi
 
 DEFAULT_EXECUTION_NAME="mock1"
@@ -19,12 +19,18 @@ if [ -z "${INPUT_EXECUTION_NAME}" ]; then
     exit 1
 fi
 
-if [ ! -f ./conf/.project.env.sh ] || [ ! -f $PRECISION100_FOLDER/conf/.env.sh ]; then
-   echo "Misconfigured installation - missing files in conf directory or invalid Precision100 installation"
+if [ ! -f ./conf/.project.env.sh ]; then
+   echo "Misconfigured installation - missing files in conf directory"
    exit 10
 fi
 
 source ./conf/.project.env.sh
+
+if [ -z "$PRECISION100_FOLDER" ] || [ ! -f $PRECISION100_FOLDER/conf/.env.sh ]; then
+   echo "Misconfigured installation - Invalid Precision100 installation"
+   exit 10
+fi
+
 source $PRECISION100_FOLDER/conf/.env.sh
 
 echo "Starting iteration: ${INPUT_EXECUTION_NAME}"
