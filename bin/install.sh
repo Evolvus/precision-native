@@ -6,6 +6,7 @@ DEFAULT_PRECISION100_HOME=$(pwd)/precision100
 DEFAULT_REPO_TYPE="GIT"
 DEFAULT_REPO_URL="git@github.com:ennovatenow/precision-100-migration-templates.git"
 DEFAULT_PROJECT_NAME=simple-demo
+DEFAULT_PROJECT_REPO_FOLDER="."
 
 
 PRECISION100_PROJECT_FOLDER=$(pwd)
@@ -40,6 +41,11 @@ echo "                                                                        "
 echo "Project Name of the migration template to be used.                      "
 read -p "[simple-demo]" INPUT_PROJECT_NAME
 PRECISION100_PROJECT_NAME="${INPUT_PROJECT_NAME:-$DEFAULT_PROJECT_NAME}"
+
+echo "                                                                        "
+echo "Folder in the repository where the project resides.                     "
+read -p "[.]" INPUT_PROJECT_REPO_FOLDER
+PRECISION100_PROJECT_REPO_FOLDER="${INPUT_PROJECT_REPO_FOLDER:-$DEFAULT_PROJECT_REPO_FOLDER}"
 
 if [ ! -d "$PRECISION100_PROJECT_FOLDER/conf" ]; then
   mkdir -p "$PRECISION100_PROJECT_FOLDER/conf"

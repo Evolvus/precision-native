@@ -8,7 +8,7 @@ git clone --recurse-submodules git@github.com:ennovatenow/precision-native.git
 cd precision-native
 ./bin/install.sh
 
-./init-exec.sh -i mock1
+./init-exec.sh mock1
 
 ./migrate.sh
 ```
