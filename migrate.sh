@@ -36,7 +36,22 @@ if [ ! -z "$2" ]; then
 fi
 
 export OPERATION="migrate.sh"
-DATAFLOW_FILES=$($PRECISION100_BIN_FOLDER/get-dataflows.sh)
+
+declare -a menu_order
+declare -A menu_texts
+declare -A lines
+
+while read line
+do
+   key=$( echo $line | cut -d ',' -f 1 )
+   value=$( echo $line | cut -d ',' -f 2 )
+   menu_order+=( "$key" )
+   menu_texts["$key"]="$value"
+   lines["$key"]="$line"
+done < <($PRECISION100_BIN_FOLDER/get-dataflows.sh)
+
+#DATAFLOW_FILES=$($PRECISION100_BIN_FOLDER/get-dataflows.sh)
+DATAFLOW_FILES=${!menu_map[@]}
 function banner() {
   clear
   echo "****************************************************************"
@@ -55,25 +70,29 @@ function banner() {
   echo "****************************************************************"
 }
 
+function pause_banner() {
+  echo ".."
+  sleep 1
+  echo "...."
+  sleep 1
+  echo "......"
+  sleep 1
+  echo "........"
+  sleep 1
+  echo "......"
+  sleep 1
+  echo "...."
+  sleep 1
+  echo ".."
+  sleep 1
+}
+
 function ask_question() {
   local log_size="$(wc -c < "$1")"
   local err_size="$(wc -c < "$2")"
 
   if [[ "PROD" = "$OPERATION_MODE" ]]; then 
-    echo ".."
-    sleep 1
-    echo "...."
-    sleep 1
-    echo "......"
-    sleep 1
-    echo "........"
-    sleep 1
-    echo "......"
-    sleep 1
-    echo "...."
-    sleep 1
-    echo ".."
-    sleep 1
+    pause_banner
   fi
 
   while true 
@@ -99,16 +118,16 @@ function ask_question() {
 
 function main_loop() {
   banner
-  select i in $DATAFLOW_FILES "Quit";
+  select i in "${menu_order[@]}" "Quit";
   do
     case $i in 
       "Quit")
          exit;
       ;;
       *)
-	log_file_name="$PRECISION100_EXECUTION_LOG_FOLDER/${i}-$(date +%F-%H-%M-%S).out"
-	err_file_name="$PRECISION100_EXECUTION_LOG_FOLDER/${i}-$(date +%F-%H-%M-%S).err"
-        $PRECISION100_BIN_FOLDER/exec-dataflow.sh ${i%.*} 1> >(tee -a "$log_file_name") 2> >(tee -a "$err_file_name" >&2)
+	log_file_name="$PRECISION100_EXECUTION_LOG_FOLDER/${menu_texts[${i%.*}]}-$(date +%F-%H-%M-%S).out"
+	err_file_name="$PRECISION100_EXECUTION_LOG_FOLDER/${menu_texts[${i%.*}]}-$(date +%F-%H-%M-%S).err"
+        $PRECISION100_BIN_FOLDER/exec-dataflow.sh "${lines[${i%.*}]}" 1> >(tee -a "$log_file_name") 2> >(tee -a "$err_file_name" >&2)
 
 	ask_question "${log_file_name}" "${err_file_name}"
 	break;;
