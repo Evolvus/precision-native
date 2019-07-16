@@ -6,6 +6,12 @@ function usage() {
   echo "e.g. $0 mock1"
 }
 
+function cleanup() {
+  rm -f $EXECUTION_PID_FILE
+  rm -f $PRECISION100_EXECUTION_CONF_FILE_NAME
+  rm -fR $PRECISION100_EXECUTION_FOLDER
+}
+
 if [[ ( "$#" -ne 1 ) ]]; then
   usage
   exit 1
@@ -51,9 +57,10 @@ if [ -f "$PRECISION100_EXECUTION_CONF_FILE_NAME" ]; then
     exit 10
 fi
 
+PRECISION100_EXECUTION_FOLDER="$PRECISION100_PROJECT_FOLDER/$PRECISION100_EXECUTION_NAME"
 cat > "$PRECISION100_EXECUTION_CONF_FILE_NAME" << EOL
 export PRECISION100_EXECUTION_NAME="$PRECISION100_EXECUTION_NAME"
-export PRECISION100_EXECUTION_FOLDER="$PRECISION100_PROJECT_FOLDER/$PRECISION100_EXECUTION_NAME"
+export PRECISION100_EXECUTION_FOLDER="$PRECISION100_EXECUTION_FOLDER"
 EOL
 source "$PRECISION100_EXECUTION_CONF_FILE_NAME"
 
@@ -63,5 +70,12 @@ mkdir -p "$PRECISION100_EXECUTION_LOG_FOLDER"
 log_file_name="$PRECISION100_EXECUTION_LOG_FOLDER/init-exec-$(date +%F-%H-%M-%S).out"
 err_file_name="$PRECISION100_EXECUTION_LOG_FOLDER/init-exec-$(date +%F-%H-%M-%S).err"
 
+mkdir -p $PRECISION100_EXECUTION_FOLDER
+
 echo "Starting iteration: ${INPUT_EXECUTION_NAME}"
 $PRECISION100_FOLDER/bin/init-exec.sh 1> >(tee -a "$log_file_name") 2> >(tee -a "$err_file_name" >&2)
+if [ "$?" -ne 0 ]; then
+   echo "Iteration start had an issue "
+   echo "Cleaning up.."
+   cleanup
+fi
