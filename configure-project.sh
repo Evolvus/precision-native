@@ -15,6 +15,13 @@ function usage() {
   echo "e.g. $0 GIT \"git@github.com:ennovatenow/precision-100-migration-templates.git\" \"A simple demo\""
 }
 
+function report() {
+  echo "Created folder: $PRECISION100_PROJECT_FOLDER/conf"
+  echo "Added configuration file: $PRECISION100_PROJECT_FOLDER/conf/.project.env.sh"
+  echo "Added defautl connection file: $PRECISION100_PROJECT_FOLDER/conf/.connections.env.sh"
+  echo "Configuration completed.."
+}
+
 function banner() {
   clear
   echo "************************************************************************"
@@ -108,3 +115,5 @@ export CHANNEL="$CHANNEL"
 export SIMULATION_MODE="FALSE"
 export SIMULATION_SLEEP=1
 PROJECT_ENV
+
+report
