@@ -22,7 +22,7 @@ function report() {
   sleep 1
   echo "Created folder: $PRECISION100_PROJECT_FOLDER/conf"
   echo "Added configuration file: $PRECISION100_PROJECT_FOLDER/conf/.project.env.sh"
-  echo "Added defautl connection file: $PRECISION100_PROJECT_FOLDER/conf/.connections.env.sh"
+  echo "Added default connection file: $PRECISION100_PROJECT_FOLDER/conf/.connections.env.sh"
   echo "Configuration completed.."
 }
 
