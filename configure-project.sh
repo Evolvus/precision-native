@@ -8,8 +8,13 @@ DEFAULT_REPO_URL="git@github.com:ennovatenow/precision-100-migration-templates.g
 DEFAULT_PROJECT_NAME=simple-demo
 DEFAULT_PROJECT_REPO_FOLDER="."
 
-
 PRECISION100_PROJECT_FOLDER=$(pwd)
+
+function usage() {
+  echo "Usage: $0 <repo type> <repo url> <project name>"
+  echo "e.g. $0 GIT \"git@github.com:ennovatenow/precision-100-migration-templates.git\" \"A simple demo\""
+}
+
 function banner() {
   clear
   echo "************************************************************************"
@@ -23,29 +28,64 @@ function banner() {
   echo "************************************************************************"
   echo "                                                                        "
 }
+
+function ask_repo_type_qn() {
+  echo "                                                                        "
+  echo "Provide the type of the repository to be used for the migration templates "
+  read -p "Supported values are GIT | FILE. Default[$DEFAULT_REPO_TYPE] : " INPUT_REPO_TYPE
+  PRECISION100_PROJECT_REPO_TYPE="${INPUT_REPO_TYPE:-$DEFAULT_REPO_TYPE}"
+}
+
+function ask_repo_url_qn() {
+  echo "                                                                        "
+  echo "URL of the repository for migration templates.                          "
+  echo "URL format must match the Repository type chosen above                  "
+  read -p "[$DEFAULT_REPO_URL] " INPUT_REPO_URL
+  PRECISION100_PROJECT_REPO_URL="${INPUT_REPO_URL:-$DEFAULT_REPO_URL}"
+}
+
+function ask_project_name_qn() {
+  echo "                                                                        "
+  echo "Project Name of the migration template to be used.                      "
+  read -p "[simple-demo]" INPUT_PROJECT_NAME
+  PRECISION100_PROJECT_NAME="${INPUT_PROJECT_NAME:-$DEFAULT_PROJECT_NAME}"
+}
+
+if [[ ( "$#" -gt 3 ) ]]; then
+  usage
+  exit 1
+fi
+
 banner
 PRECISION100_FOLDER=$(pwd)/precision100
 
-echo "                                                                        "
-echo "Provide the type of the repository to be used for the migration templates "
-read -p "Supported values are GIT | FILE. Default[$DEFAULT_REPO_TYPE] : " INPUT_REPO_TYPE
-PRECISION100_PROJECT_REPO_TYPE="${INPUT_REPO_TYPE:-$DEFAULT_REPO_TYPE}"
+if [ -f "$PRECISION100_PROJECT_FOLDER/conf/.project.env.sh" ]; then
+  echo "Project already initialized..aborting"
+  exit 1
+fi
 
-echo "                                                                        "
-echo "URL of the repository for migration templates.                          "
-echo "URL format must match the Repository type chosen above                  "
-read -p "[$DEFAULT_REPO_URL] " INPUT_REPO_URL
-PRECISION100_PROJECT_REPO_URL="${INPUT_REPO_URL:-$DEFAULT_REPO_URL}"
+if [ -z "$1" ]; then
+  ask_repo_type_qn
+else
+  PRECISION100_PROJECT_REPO_TYPE="$1"
+fi
 
-echo "                                                                        "
-echo "Project Name of the migration template to be used.                      "
-read -p "[simple-demo]" INPUT_PROJECT_NAME
-PRECISION100_PROJECT_NAME="${INPUT_PROJECT_NAME:-$DEFAULT_PROJECT_NAME}"
+if [ "$PRECISION100_PROJECT_REPO_TYPE" != "GIT" ] && [ "$PRECISION100_PROJECT_REPO_TYPE" != "SVN" ] && [ "$PRECISION100_PROJECT_REPO_TYPE" !=  "FILE" ]; then
+  usage
+  exit 1
+fi
 
-echo "                                                                        "
-echo "Folder in the repository where the project resides.                     "
-read -p "[.]" INPUT_PROJECT_REPO_FOLDER
-PRECISION100_PROJECT_REPO_FOLDER="${INPUT_PROJECT_REPO_FOLDER:-$DEFAULT_PROJECT_REPO_FOLDER}"
+if [ -z "$2" ]; then
+  ask_repo_url_qn
+else
+  PRECISION100_PROJECT_REPO_URL="$2"
+fi
+
+if [ -z "$3" ]; then
+  ask_project_name_qn
+else
+  PRECISION100_PROJECT_NAME="$3"
+fi
 
 if [ ! -d "$PRECISION100_PROJECT_FOLDER/conf" ]; then
   mkdir -p "$PRECISION100_PROJECT_FOLDER/conf"

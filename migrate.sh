@@ -28,30 +28,6 @@ source "$PRECISION100_PROJECT_CONF_FOLDER/$EXECUTION_NAME.env.sh"
 
 source $PRECISION100_FOLDER/conf/.execution.env.sh
 
-if [ ! -z "$1" ]; then
-    export OPERATION_MODE="PROD"
-fi
-if [ ! -z "$2" ]; then
-    export SIMULATION_MODE="TRUE"
-fi
-
-export OPERATION="migrate.sh"
-
-declare -a menu_order
-declare -A menu_texts
-declare -A lines
-
-while read line
-do
-   key=$( echo $line | cut -d ',' -f 1 )
-   value=$( echo $line | cut -d ',' -f 2 )
-   menu_order+=( "$key" )
-   menu_texts["$key"]="$value"
-   lines["$key"]="$line"
-done < <($PRECISION100_BIN_FOLDER/get-dataflows.sh)
-
-#DATAFLOW_FILES=$($PRECISION100_BIN_FOLDER/get-dataflows.sh)
-DATAFLOW_FILES=${!menu_map[@]}
 function banner() {
   clear
   echo "****************************************************************"
@@ -62,9 +38,9 @@ function banner() {
   echo "                                                                "
   echo "  Iteration: $PRECISION100_EXECUTION_NAME                       "
   echo "                                                                "
-  echo "  Operation Mode: $OPERATION_MODE                               "
+  echo "  Operation Mode: $PRECISION100_RUNTIME_EXECUTION_MODE          "
   echo "                                                                "
-  echo "  Simulation Mode: $SIMULATION_MODE                             "
+  echo "  Simulation Mode: $PRECISION100_RUNTIME_SIMULATION_MODE        "
   echo "                                                                "
   echo "                                                                "
   echo "****************************************************************"
@@ -86,6 +62,27 @@ function pause_banner() {
   echo ".."
   sleep 1
 }
+
+export PRECISION100_RUNTIME_EXECUTION_MODE=${1:-"PROD"}
+export PRECISION100_RUNTIME_SIMULATION_MODE=${1:-"FALSE"}
+
+export OPERATION="migrate.sh"
+
+declare -a menu_order
+declare -A menu_texts
+declare -A lines
+
+while read line
+do
+   key=$( echo $line | cut -d ',' -f 1 )
+   value=$( echo $line | cut -d ',' -f 2 )
+   menu_order+=( "$key" )
+   menu_texts["$key"]="$value"
+   lines["$key"]="$line"
+done < <($PRECISION100_BIN_FOLDER/get-dataflows.sh)
+
+#DATAFLOW_FILES=$($PRECISION100_BIN_FOLDER/get-dataflows.sh)
+DATAFLOW_FILES=${!menu_map[@]}
 
 function ask_question() {
   local log_size="$(wc -c < "$1")"
@@ -128,6 +125,10 @@ function main_loop() {
 	log_file_name="$PRECISION100_EXECUTION_LOG_FOLDER/${menu_texts[${i%.*}]}-$(date +%F-%H-%M-%S).out"
 	err_file_name="$PRECISION100_EXECUTION_LOG_FOLDER/${menu_texts[${i%.*}]}-$(date +%F-%H-%M-%S).err"
         $PRECISION100_BIN_FOLDER/exec-dataflow.sh "${lines[${i%.*}]}" 1> >(tee -a "$log_file_name") 2> >(tee -a "$err_file_name" >&2)
+	if [ "$?" -ne "0" ] && [ "$PRECISION100_RUNTIME_EXECUTION_MODE" = "PROD" ]; then
+	   echo "Error executing dataflow: $i" 1> >(tee -a "err_file_name")
+	   exit 1
+	fi
 
 	ask_question "${log_file_name}" "${err_file_name}"
 	break;;
