@@ -72,6 +72,14 @@ declare -a menu_order
 declare -A menu_texts
 declare -A lines
 
+dataflows=$($PRECISION100_BIN_FOLDER/get-dataflows.sh)
+retval=$?
+
+if [ $retval -ne 0 ]; then
+  echo "Error in project configuration"
+  exit $retval
+fi
+
 while read line
 do
    key=$( echo $line | cut -d ',' -f 1 )
@@ -79,7 +87,7 @@ do
    menu_order+=( "$key" )
    menu_texts["$key"]="$value"
    lines["$key"]="$line"
-done < <($PRECISION100_BIN_FOLDER/get-dataflows.sh)
+done <<<"$dataflows"
 
 #DATAFLOW_FILES=$($PRECISION100_BIN_FOLDER/get-dataflows.sh)
 DATAFLOW_FILES=${!menu_map[@]}
