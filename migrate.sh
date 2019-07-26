@@ -1,7 +1,8 @@
 #!/bin/bash
 
 if [[ ( "$#" -gt 2 ) ]]; then
-  echo "Usage: $0 [simulation-mode-true-false] [simulation-sleep-time-in-seconds]"
+  echo "Usage: $0 [execution-mode-PROD-DEV] [simulation-mode-TRUE-FALSE]"
+  echo "e.g. $0 PROD FALSE"
   exit 1;
 fi
 
@@ -64,7 +65,7 @@ function pause_banner() {
 }
 
 export PRECISION100_RUNTIME_EXECUTION_MODE=${1:-"PROD"}
-export PRECISION100_RUNTIME_SIMULATION_MODE=${1:-"FALSE"}
+export PRECISION100_RUNTIME_SIMULATION_MODE=${2:-"FALSE"}
 
 export OPERATION="migrate.sh"
 
