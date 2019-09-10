@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [[ ( "$#" -gt 2 ) ]]; then
+if [[ ( "$#" -ne 2 ) ]]; then
   echo "Usage: $0 <Container> <Line Number>"
   echo "e.g. $0 setup 10"
   exit 1;
