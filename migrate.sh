@@ -17,7 +17,7 @@ if [ ! -f "$PRECISION100_PROJECT_CONF_FOLDER/.execution.pid" ]; then
   exit 10
 fi
 
-if [ -z "$PRECISION100_FOLDER" ] || [ ! -f $PRECISION100_FOLDER/conf/.env.sh ]; then
+if [ ! -f "$PRECISION100_PROJECT_CONF_FOLDER/.env.sh" ]; then
    echo "Misconfigured installation - Invalid Precision100 installation"
    exit 10
 fi
@@ -73,7 +73,8 @@ declare -a menu_order
 menu_texts=()
 lines=()
 
-dataflows=$($PRECISION100_BIN_FOLDER/get-dataflows.sh)
+dataflows=$(python -c "from p100 import layout;dataflows=layout.get_dataflows('NATIVE',project_reg_file='$PRECISION100_EXECUTION_DATAFLOW_FOLDER/project.reg');print('\n'.join(f'{key}: {value}' for key, value in dataflows.items()))")
+#dataflows=$($PRECISION100_BIN_FOLDER/get-dataflows.sh)
 retval=$?
 
 if [ $retval -ne 0 ]; then
