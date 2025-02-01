@@ -22,12 +22,16 @@ if [ ! -f "$PRECISION100_PROJECT_CONF_FOLDER/.env.sh" ]; then
    exit 10
 fi
 
-source $PRECISION100_FOLDER/conf/.env.sh
+source $PRECISION100_PROJECT_CONF_FOLDER/.env.sh
 
 EXECUTION_NAME=$(cat "$PRECISION100_PROJECT_CONF_FOLDER/.execution.pid")
 source "$PRECISION100_PROJECT_CONF_FOLDER/$EXECUTION_NAME.env.sh"
 
-source $PRECISION100_FOLDER/conf/.execution.env.sh
+source $PRECISION100_PROJECT_CONF_FOLDER/.execution.env.sh
+
+df='get_dataflows'
+log_file_name="$PRECISION100_EXECUTION_LOG_FOLDER/${df}-$(date +%F-%H-%M-%S).out"
+err_file_name="$PRECISION100_EXECUTION_LOG_FOLDER/${df}-$(date +%F-%H-%M-%S).err"
 
 function banner() {
   clear
@@ -73,7 +77,7 @@ declare -a menu_order
 menu_texts=()
 lines=()
 
-dataflows=$(python -c "from p100 import layout;dataflows=layout.get_dataflows('NATIVE',project_reg_file='$PRECISION100_EXECUTION_DATAFLOW_FOLDER/project.reg');print('\n'.join(f'{key}: {value}' for key, value in dataflows.items()))")
+dataflows=$(python -c "from p100 import layout;import logging;logger = logging.getLogger(__name__);logging.basicConfig(filename='$log_file_name', level=logging.INFO);dataflows=layout.get_dataflows(operator_name='NATIVE',project_reg_file='$PRECISION100_EXECUTION_DATAFLOW_FOLDER/project.reg', operation_mode='$OPERATION_MODE');print('\n'.join(f'{key},{value}' for key, value in dataflows.items()))")
 #dataflows=$($PRECISION100_BIN_FOLDER/get-dataflows.sh)
 retval=$?
 
@@ -84,6 +88,7 @@ fi
 
 while read line
 do
+   echo $line
    key=$( echo $line | cut -d ',' -f 1 )
    value=$( echo $line | cut -d ',' -f 2 )
    menu_order+=( "$key" )
