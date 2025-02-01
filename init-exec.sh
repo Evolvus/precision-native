@@ -99,7 +99,7 @@ print(f"Starting log: ${log_file_name}")
 print(f"Starting iteration: ${INPUT_EXECUTION_NAME}")
 print(f"Creating local repo folder: ${PRECISION100_EXECUTION_LOCAL_REPO_FOLDER}")
 
-repo.execute_instruction(operator_name='${PRECISION100_PROJECT_REPO_TYPE}', local_url='${PRECISION100_EXECUTION_LOCAL_REPO_FOLDER}', remote_url='${PRECISION100_PROJECT_REPO_URL}', event='CHECKOUT', operation_mode='${OPERATION_MODE}') 
+repo.execute(operator_name='${PRECISION100_PROJECT_REPO_TYPE}', local_url='${PRECISION100_EXECUTION_LOCAL_REPO_FOLDER}', remote_url='${PRECISION100_PROJECT_REPO_URL}', event='CHECKOUT', operation_mode='${OPERATION_MODE}') 
 
 print("Done");
 
