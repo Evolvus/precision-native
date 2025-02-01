@@ -77,8 +77,17 @@ declare -a menu_order
 menu_texts=()
 lines=()
 
-dataflows=$(python -c "from p100 import layout;import logging;logger = logging.getLogger(__name__);logging.basicConfig(filename='$log_file_name', level=logging.INFO);dataflows=layout.get_dataflows(operator_name='NATIVE',project_reg_file='$PRECISION100_EXECUTION_DATAFLOW_FOLDER/project.reg', operation_mode='$OPERATION_MODE');print('\n'.join(f'{key},{value}' for key, value in dataflows.items()))")
-#dataflows=$($PRECISION100_BIN_FOLDER/get-dataflows.sh)
+dataflows=$(python -c "
+import os, logging
+from p100 import layout
+logger = logging.getLogger(__name__)
+logging.basicConfig(filename='$log_file_name', level=logging.INFO)
+dataflows = layout.get_dataflows(
+    operator_name='NATIVE',
+    env=os.environ.copy()
+)
+print('\n'.join(f'{key},{value}' for key, value in dataflows.items()))
+")
 retval=$?
 
 if [ $retval -ne 0 ]; then
