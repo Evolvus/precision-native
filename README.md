@@ -1,12 +1,13 @@
 # precision-native
 Command line menu driven front end for Migration Use cases
 
-
 ## Quick Usage
 ```
-git clone --recurse-submodules git@github.com:ennovatenow/precision-native.git
+git clone git@github.com:ennovatenow/precision-native.git
 cd precision-native
-./bin/install.sh
+pip install precision_100
+
+./bin/configure-project.sh
 
 ./init-exec.sh mock1
 
@@ -15,14 +16,11 @@ cd precision-native
 
 This will create the `$HOME/precision100` folder and execute the `simple-demo` project.
 
-> The `--recurse-submodules` parameter is required while cloning because we have a dependency with Precision100 framework.
-
-
 ### A longer example
 To-do
 
 ## Operating System Requirements
-The simple client has the same requirements as the Precision 100 Framework, it uses the `bash` shell for most of its work, more specifically it uses bash 4.2 features like associative arrays. Although all development and tests of the framework is done on `linux`, the framwork should run on any operating system supporting the `bash` shell.
+The native client uses the `bash` shell for most of its work, more specifically it uses bash 4.2 features like associative arrays. Although all development and tests of the framework is done on `linux`, the framwork should run on any operating system supporting the `bash` shell.
 Make sure you check your `bash` version.
 
 ```
