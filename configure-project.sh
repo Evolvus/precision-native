@@ -10,6 +10,8 @@ DEFAULT_PROJECT_REPO_FOLDER="."
 
 PRECISION100_PROJECT_FOLDER=$(pwd)
 
+PRECISION100_NATIVE_VERSION=$(cat VERSION)
+
 function usage() {
   echo "Usage: $0 <repo type> <repo url> <project name>"
   echo "e.g. $0 GIT \"git@github.com:ennovatenow/precision-100-migration-templates.git\" \"A simple demo\""
@@ -30,7 +32,7 @@ function banner() {
   clear
   echo "************************************************************************"
   echo "                                                                        "
-  echo "                  Precision Native                                      "
+  echo "             Precision Native($PRECISION100_NATIVE_VERSION)                                      "
   echo "                                                                        "
   echo "  A command-line menu driven interface for the PRECISION100 framework.  "
   echo "                                                                        "
