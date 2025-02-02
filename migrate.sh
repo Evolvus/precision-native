@@ -77,13 +77,13 @@ declare -a menu_order
 menu_texts=()
 lines=()
 
-dataflows=$(python -c "
+dataflows=$(python3 -c "
 import os, logging
 from p100 import layout
 logger = logging.getLogger(__name__)
 logging.basicConfig(filename='$log_file_name', level=logging.INFO)
 dataflows = layout.get_dataflows(
-    operator_name='NATIVE',
+    operator_name='$PRECISION100_LAYOUT_OPERATOR',
     env=os.environ.copy()
 )
 print('\n'.join(f'{key},{value}' for key, value in dataflows.items()))
@@ -161,6 +161,19 @@ function get_line_for_key() {
   echo "Key not found"
 }
 
+function execute_dataflow() {
+local exec_result=$(python3 -c "
+import os, logging
+from p100 import layout
+logger = logging.getLogger(__name__)
+logging.basicConfig(filename='$2', level=logging.INFO)
+dataflows = layout.execute_dataflow(
+    operator_name='$PRECISION100_LAYOUT_OPERATOR',
+    dataflow='$1',
+    env=os.environ.copy()
+)")
+echo "$exec_result"
+}
 function main_loop() {
   banner
   select i in "${menu_order[@]}" "Quit";
@@ -176,10 +189,13 @@ function main_loop() {
         echo "Executing dataflow: $df"
 	      log_file_name="$PRECISION100_EXECUTION_LOG_FOLDER/${df}-$(date +%F-%H-%M-%S).out"
 	      err_file_name="$PRECISION100_EXECUTION_LOG_FOLDER/${df}-$(date +%F-%H-%M-%S).err"
-        $PRECISION100_BIN_FOLDER/exec-dataflow.sh "${df_line}" 1> >(tee -a "$log_file_name") 2> >(tee -a "$err_file_name" >&2)
+        touch $err_file_name
+        exec_result=$(execute_dataflow "$df_line" "$log_file_name")
+        #$PRECISION100_BIN_FOLDER/exec-dataflow.sh "${df_line}" 1> >(tee -a "$log_file_name") 2> >(tee -a "$err_file_name" >&2)
 	      if [ "$?" -ne "0" ] && [ "$PRECISION100_RUNTIME_EXECUTION_MODE" = "PROD" ]; then
 	         echo "Error executing dataflow: $i" 1> >(tee -a "err_file_name")
 	         exit 1
+
 	      fi
 	      ask_question "${log_file_name}" "${err_file_name}"
 	    break;;
