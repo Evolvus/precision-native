@@ -25,12 +25,12 @@ fi
 
 source ./conf/.project.env.sh
 
-if [ -z "$PRECISION100_FOLDER" ] || [ ! -f $PRECISION100_FOLDER/conf/.env.sh ]; then
+if [ ! -f $PRECISION100_PROJECT_CONF_FOLDER/.env.sh ]; then
    echo "Misconfigured installation - Invalid Precision100 installation"
    exit 10
 fi
 
-source $PRECISION100_FOLDER/conf/.env.sh
+source $PRECISION100_PROJECT_CONF_FOLDER/.env.sh
 
 EXECUTION_PID_FILE="$PRECISION100_PROJECT_CONF_FOLDER/.execution.pid"
 
