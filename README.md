@@ -78,11 +78,18 @@ To execute the project, follow the below steps,
 ```
 ./bin/init-exec.sh mock1
 ```
+##### Upon successfull initialization of the mock
+<img width="860" alt="Start mock successfully" src="https://github.com/user-attachments/assets/d84e244e-7965-41d0-ba27-f6d012b0d7b0" />
 
 #### Execute the mock
+
 ```
 ./migrate.sh
 ```
+
+##### The mock execution brings up the all the menus available for the precison 100 project.
+<img width="488" alt="Screenshot 2025-02-12 at 2 26 48 PM" src="https://github.com/user-attachments/assets/971de739-d87f-463a-bc1e-494448d1b452" />
+
 
 
 ## Operating System Requirements
