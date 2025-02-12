@@ -69,7 +69,7 @@ To execute the project, follow the below steps,
 <img width="830" alt="Give a name for the project" src="https://github.com/user-attachments/assets/bd14b720-8747-4b4a-8e5e-e742e84eddbb" />
 
 ##### Upon successfull configuration
-<img width="830" alt="Screenshot 2025-02-12 at 12 54 22 PM" src="https://github.com/user-attachments/assets/4fced29a-6f83-45b8-9f1d-d3fb7b650e9a" />
+<img width="860" alt="Screenshot 2025-02-12 at 1 06 37 PM" src="https://github.com/user-attachments/assets/87327894-0b20-492a-9d29-e26a81bf18bb" />
 
 
 
