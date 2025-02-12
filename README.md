@@ -54,6 +54,14 @@ To execute the project, follow the below steps,
 ```
 ./bin/configure-project.sh
 ```
+Select the protocol for the project location (FILE or GIT location) *(screenshot below)*
+<img width="597" alt="Select the protocol to fetch the data" src="https://github.com/user-attachments/assets/136cd94b-5754-44a4-bd82-cb4a556c8d1e" />
+
+Select the URI of the project to be executed *(screenshot below)*
+<img width="830" alt="Select the URI to fetch the data" src="https://github.com/user-attachments/assets/8c3a9040-ae7f-4d2d-a515-50585c63eb89" />
+
+Select the name of the project to be executed *(screenshot below)*
+<img width="830" alt="Give a name for the project" src="https://github.com/user-attachments/assets/bd14b720-8747-4b4a-8e5e-e742e84eddbb" />
 
 
 Initialize mock1
