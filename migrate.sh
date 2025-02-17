@@ -170,6 +170,7 @@ logging.basicConfig(filename='$2', level=logging.INFO)
 dataflows = layout.execute_dataflow(
     operator_name='$PRECISION100_LAYOUT_OPERATOR',
     connect_operator_name='$PRECISION100_CONNECT_OPERATOR',
+    CONNECT_OPERATOR_ENCRYPTION_KEY='bb6qA24837etLVTOG8J9DWEGmTzXX84kHHir_9lX4XU=',
     dataflow='$1',
     env=os.environ.copy()
 )")
