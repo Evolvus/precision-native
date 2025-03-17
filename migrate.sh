@@ -6,6 +6,9 @@ if [[ ( "$#" -gt 2 ) ]]; then
   exit 1;
 fi
 
+PRECISION100_NATIVE_VERSION=$(cat VERSION)
+PRECISION100_VERSION=$(python -c "from importlib.metadata import version;  print(version('precision-100'))")
+
 if [ ! -f ./conf/.project.env.sh ]; then
    echo "Misconfigured installation - missing files in conf directory"
    exit 10
@@ -37,16 +40,14 @@ function banner() {
   clear
   echo "****************************************************************"
   echo "                                                                "
-  echo "                  Precision 100 Execution                       "
+  echo "        Precision Native($PRECISION100_NATIVE_VERSION) Execution"
   echo "                                                                "
   echo "  Project Name: $PRECISION100_PROJECT_NAME                      "
   echo "                                                                "
   echo "  Iteration: $PRECISION100_EXECUTION_NAME                       "
   echo "                                                                "
-  echo "  Operation Mode: $PRECISION100_RUNTIME_EXECUTION_MODE          "
-  echo "                                                                "
-  echo "  Simulation Mode: $PRECISION100_RUNTIME_SIMULATION_MODE        "
-  echo "                                                                "
+  echo "  PRECISION100 VERSION: $PRECISION100_VERSION                           "
+  echo "                                                                        "
   echo "                                                                "
   echo "****************************************************************"
 }
