@@ -23,11 +23,11 @@ To execute a **precision 100 project** using the **precision-native** client we 
 ### Prerequisites
 To execute the project the requirements are
 
-1. **python3** version ** > 3.8**
+1. **python3** version ** > 3.11**
 2. Precision-100 Framework
 3. Precision-100 Operators
 
-**python3** version should be **> 3.8**
+**python3** version should be **> 3.11**
    
 ```
 python3 --version
@@ -46,6 +46,8 @@ Install Precision 100 and Precision 100 operators (for now the components are in
 ```
 python3 -m pip install --index-url https://test.pypi.org/simple precision_100
 python3 -m pip install --index-url https://test.pypi.org/simple precision_100_operators
+python3 -m pip install --index-url https://test.pypi.org/simple precision_100_orcl_operators
+
 ```
 
 ### Execution
